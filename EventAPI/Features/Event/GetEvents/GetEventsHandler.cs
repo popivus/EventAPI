@@ -1,14 +1,13 @@
-﻿using EventAPI.Models.Interfaces;
-using EventAPI.Queries;
+﻿using EventAPI.Features.Event;
 using EventAPI.Services.Interfaces;
 using MediatR;
 
-namespace EventAPI.Handlers
+namespace EventAPI.Features.Event.GetEvents
 {
     public class GetEventsHandler : IRequestHandler<GetEventsQuery, IEnumerable<IEvent>>
     {
         private readonly IEventDatabaseService _eventDatabaseService;
-        
+
         public GetEventsHandler(IEventDatabaseService eventDatabaseService)
         {
             _eventDatabaseService = eventDatabaseService;

@@ -1,5 +1,5 @@
-﻿using EventAPI.Models;
-using EventAPI.Models.Interfaces;
+﻿using EventAPI.Features.Event;
+using EventAPI.Features.Ticket;
 using EventAPI.Services.Interfaces;
 
 namespace EventAPI.Services
@@ -12,8 +12,14 @@ namespace EventAPI.Services
         {
             _events = new List<IEvent>()
             {
-                new Event(Guid.NewGuid(), "ДР", "День рождения Виталия", DateTime.Parse("22.04.2023"), DateTime.Parse("23.04.2023"), Guid.NewGuid(), Guid.NewGuid()),
-                new Event(Guid.NewGuid(), "Собеседование", "Собеседование Николая", DateTime.Parse("17.04.2023 15:00"), DateTime.Parse("17.04.2023 16:00"), Guid.NewGuid(), Guid.NewGuid())
+                new Event(Guid.NewGuid(), "ДР", "День рождения Виталия", DateTime.Parse("22.04.2023"), DateTime.Parse("23.04.2023"), Guid.NewGuid(), Guid.NewGuid(), 
+                new List<Ticket>()
+                {
+                    new Ticket(Guid.NewGuid(), Guid.NewGuid(), ""),
+                    new Ticket(Guid.NewGuid(), Guid.NewGuid(), ""),
+                },
+                true),
+                new Event(Guid.NewGuid(), "Собеседование", "Собеседование Николая", DateTime.Parse("17.04.2023 15:00"), DateTime.Parse("17.04.2023 16:00"), Guid.NewGuid(), Guid.NewGuid(), new List<Ticket>(), true)
             };
         }
 
@@ -52,6 +58,15 @@ namespace EventAPI.Services
                 var eventToDelete = _events.FirstOrDefault(e => e.Id == idEvent);
                 _events.Remove(eventToDelete);
             }
+        }
+
+        public async Task AddTicket(ITicket ticket, Guid EventId)
+        {
+            var currentEvent = _events.FirstOrDefault(e => e.Id == EventId);
+            if (currentEvent == null)
+                return;
+
+            currentEvent.Tickets = currentEvent.Tickets.Append(ticket);
         }
     }
 }

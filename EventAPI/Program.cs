@@ -1,18 +1,29 @@
-using EventAPI.Models.Interfaces;
 using EventAPI.Services;
 using EventAPI.Services.Interfaces;
 using EventAPI.Validators;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
-using MediatR;
 using System.Reflection;
+using EventAPI.Features.Event;
+using EventAPI.Exception_Filtres;
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+                          policy =>
+                          {
+                              policy.AllowAnyOrigin()
+                                 .AllowAnyMethod()
+                                 .AllowAnyHeader();
+                          });
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -31,6 +42,7 @@ builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<ISpaceService, SpaceService>();
 builder.Services.AddSingleton<IEventDatabaseService, EventDatabaseService>();
 builder.Services.AddScoped<IValidator<IEvent>, EventValidator>();
+builder.Services.AddMvc(o => o.Filters.Add(new ScExeptionFilter()));
 
 var app = builder.Build();
 
@@ -40,6 +52,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

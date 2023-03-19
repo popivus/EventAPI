@@ -1,4 +1,7 @@
-﻿namespace EventAPI.Models.Interfaces
+﻿using EventAPI.Features.Ticket;
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace EventAPI.Features.Event
 {
     public interface IEvent
     {
@@ -9,5 +12,7 @@
         public DateTime EndDateTime { get; set; }
         public Guid ImageId { get; set; }
         public Guid SpaceId { get; set; }
+        public IEnumerable<ITicket> Tickets { get; set; }
+        public bool Availability { get; set; }
     }
 }

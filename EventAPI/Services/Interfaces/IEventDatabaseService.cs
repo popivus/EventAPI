@@ -1,4 +1,5 @@
-﻿using EventAPI.Models.Interfaces;
+﻿using EventAPI.Features.Event;
+using EventAPI.Features.Ticket;
 
 namespace EventAPI.Services.Interfaces
 {
@@ -8,5 +9,6 @@ namespace EventAPI.Services.Interfaces
         public Task Add(IEvent eEvent);
         public Task Update(IEvent eEvent);
         public Task Delete(Guid idEvent);
+        public Task AddTicket(ITicket ticket, Guid EventId);
     }
 }
