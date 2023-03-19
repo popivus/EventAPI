@@ -1,0 +1,6 @@
+[submodule "EventAPI/SC.Internship.Common"]
+	path = EventAPI/SC.Internship.Common
+	url = https://github.com/Sense-Capital/SC.Internship.Common
+[submodule "SC.Internship.Common"]
+	path = SC.Internship.Common
+	url = https://github.com/Sense-Capital/SC.Internship.Common
